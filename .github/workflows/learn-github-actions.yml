@@ -4,6 +4,9 @@ run-name: ${{ github.actor }} is learning GitHub Actions
 
 # A release is only created in the GitHub UI when you click publish release.concurrency:
 # https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+
+# You can't create it before you click publish
+# https://github.com/orgs/community/discussions/7118
 on:
   release:
     types: [published]
@@ -15,5 +18,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - run: mkdir out
       - run: npm install -g bats
-      - run: bats -v
+      - run: bats -v > out/bats-version.txt
+      #   Storing workflow data as artifacts
+      #   https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: My Artefact
+          path: out/*
