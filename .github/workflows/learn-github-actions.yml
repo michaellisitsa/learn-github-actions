@@ -1,9 +1,12 @@
 name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+
+# A release is only created in the GitHub UI when you click publish release.concurrency:
+# https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
